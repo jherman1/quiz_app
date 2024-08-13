@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'package:quiz_app/answer_button.dart';
-import 'package:quiz_app/data/flutter_questions.dart' as flutterQuestions;
-import 'package:quiz_app/data/movie_questions.dart' as movieQuestions;
+import 'package:quiz_app/data/quiz_option.dart';
 
 class QuestionsScreen extends StatefulWidget {
-  const QuestionsScreen({super.key, required this.onSelectAnswer});
+  const QuestionsScreen(
+      {super.key, required this.activeQuiz, required this.onSelectAnswer});
 
+  final QuizOption activeQuiz;
   final void Function(String answer) onSelectAnswer;
 
   @override
@@ -29,7 +30,7 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
 
   @override
   Widget build(context) {
-    final currentQuestion = movieQuestions.questions[currentQuestionIndex];
+    final currentQuestion = widget.activeQuiz.questions[currentQuestionIndex];
 
     return SizedBox(
       width: double.infinity,
@@ -48,13 +49,16 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 30),
-            ...currentQuestion.getShuffledAnswers().map((answer) {
-              return AnswerButton(
+            ...currentQuestion.getShuffledAnswers().map(
+              (answer) {
+                return AnswerButton(
                   answerText: answer,
                   onTap: () {
                     answerQuestion(answer);
-                  });
-            }),
+                  },
+                );
+              },
+            ),
           ],
         ),
       ),
