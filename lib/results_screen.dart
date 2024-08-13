@@ -5,10 +5,11 @@ import 'package:quiz_app/questions_summary.dart';
 
 class ResultsScreen extends StatelessWidget {
   const ResultsScreen(
-      {super.key, required this.chosenAnswers, required this.onRestartQuiz});
+      {super.key, required this.chosenAnswers, required this.onRestartQuiz, required this.onReturnHome});
 
   final List<String> chosenAnswers;
   final void Function() onRestartQuiz;
+  final void Function() onReturnHome;
 
   List<Map<String, Object>> getSummaryData() {
     final List<Map<String, Object>> summary = [];
@@ -58,13 +59,23 @@ class ResultsScreen extends StatelessWidget {
                 height: 30,
               ),
               TextButton.icon(
-                  onPressed: onRestartQuiz,
-                  style: TextButton.styleFrom(foregroundColor: Colors.white),
-                  icon: const Icon(Icons.refresh_outlined),
-                  label: const Text(
-                    'Restart Quiz!',
-                    style: TextStyle(color: Colors.white),
-                  )),
+                onPressed: onRestartQuiz,
+                style: TextButton.styleFrom(foregroundColor: Colors.white),
+                icon: const Icon(Icons.refresh_outlined),
+                label: const Text(
+                  'Restart Quiz!',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+              TextButton.icon(
+                onPressed: onReturnHome,
+                style: TextButton.styleFrom(foregroundColor: Colors.white),
+                icon: const Icon(Icons.home_sharp),
+                label: const Text(
+                  'Return Home',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
             ],
           )),
     );
