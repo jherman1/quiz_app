@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:quiz_app/data/flutter_questions.dart';
+import 'package:quiz_app/data/flutter_questions.dart' as flutterQuestions;
+import 'package:quiz_app/data/movie_questions.dart' as movieQuestions;
 import 'package:quiz_app/questions_summary.dart';
 
 class ResultsScreen extends StatelessWidget {
@@ -15,8 +16,8 @@ class ResultsScreen extends StatelessWidget {
     for (var i = 0; i < chosenAnswers.length; i++) {
       summary.add({
         'question_index': i,
-        'question': questions[i].text,
-        'correct_answer': questions[i].answers[0],
+        'question': movieQuestions.questions[i].text,
+        'correct_answer': movieQuestions.questions[i].answers[0],
         'user_answer': chosenAnswers[i]
       });
     }
@@ -27,7 +28,7 @@ class ResultsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final summaryData = getSummaryData();
-    final numTotalQuestions = questions.length;
+    final numTotalQuestions = movieQuestions.questions.length;
     final numCorrectQuestions = summaryData.where(
       (data) {
         return data['correct_answer'] == data['user_answer'];

@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'package:quiz_app/answer_button.dart';
-import 'package:quiz_app/data/flutter_questions.dart';
+import 'package:quiz_app/data/flutter_questions.dart' as flutterQuestions;
+import 'package:quiz_app/data/movie_questions.dart' as movieQuestions;
 
 class QuestionsScreen extends StatefulWidget {
   const QuestionsScreen({super.key, required this.onSelectAnswer});
@@ -28,7 +29,7 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
 
   @override
   Widget build(context) {
-    final currentQuestion = questions[currentQuestionIndex];
+    final currentQuestion = movieQuestions.questions[currentQuestionIndex];
 
     return SizedBox(
       width: double.infinity,
