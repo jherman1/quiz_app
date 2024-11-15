@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:quiz_app/start_screen.dart';
 import 'package:quiz_app/questions_screen.dart';
-import 'package:quiz_app/data/questions.dart';
+import 'package:quiz_app/data/flutter_questions.dart';
 import 'package:quiz_app/results_screen.dart';
+
+import 'package:quiz_app/data/quiz_option.dart';
 
 class Quiz extends StatefulWidget {
   const Quiz({super.key});
@@ -14,32 +16,27 @@ class Quiz extends StatefulWidget {
 }
 
 class _QuizState extends State<Quiz> {
-
-  /*  This code and commented code below is one way to do this, 
-      otherwise we used the Ternary conditions 
-
-  // Widget? activeScreen;
-  
-  // @override
-  // void initState() {
-  //   activeScreen = StartScreen(switchScreen);
-  //   super.initState();
-  // } */
-
   List<String> selectedAnswers = [];
   var activeScreen = 'start-screen';
 
+  QuizOption activeQuiz =
+      QuizOption.values[0]; //initializes to first quiz (flutter)
+
   void switchScreen() {
     setState(() {
-      // activeScreen = const QuestionsScreen();
       activeScreen = 'questions-screen';
     });
+  }
+
+  void chooseQuiz(QuizOption quiz) {
+    // selectedQuiz = quizOptions.singleWhere((option) => option['quiz_name'] == quiz);
+    activeQuiz = quiz;
   }
 
   void chooseAnswer(String answer) {
     selectedAnswers.add(answer);
 
-    if(selectedAnswers.length == questions.length) {
+    if (selectedAnswers.length == questions.length) {
       setState(() {
         // selectedAnswers = [];
         activeScreen = 'results-screen';
@@ -48,23 +45,40 @@ class _QuizState extends State<Quiz> {
   }
 
   void restartQuiz() {
+    setState(
+      () {
+        selectedAnswers = [];
+        activeScreen = 'questions-screen';
+      },
+    );
+  }
+
+  void returnHome() {
     setState(() {
       selectedAnswers = [];
-      activeScreen = 'questions-screen';
-    },);
+      activeScreen = 'start-screen';
+    });
   }
 
   @override
   Widget build(context) {
+    Widget screenWidget = StartScreen(
+        startQuiz: switchScreen,
+        quizOptions: QuizOption.values,
+        onSelectQuiz: chooseQuiz);
 
-    Widget screenWidget = StartScreen(switchScreen);
+    if (activeScreen == 'questions-screen') {
+      screenWidget =
+          QuestionsScreen(activeQuiz: activeQuiz, onSelectAnswer: chooseAnswer);
+    }
 
-    if(activeScreen == 'questions-screen') {
-      screenWidget = QuestionsScreen(onSelectAnswer: chooseAnswer);
-    } 
-    
-    if(activeScreen == 'results-screen') {
-      screenWidget = ResultsScreen(chosenAnswers: selectedAnswers, onRestartQuiz: restartQuiz);
+    if (activeScreen == 'results-screen') {
+      screenWidget = ResultsScreen(
+        activeQuiz: activeQuiz,
+        chosenAnswers: selectedAnswers,
+        onRestartQuiz: restartQuiz,
+        onReturnHome: returnHome,
+      );
     }
 
     return MaterialApp(
